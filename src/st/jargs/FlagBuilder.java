@@ -4,7 +4,7 @@ package st.jargs;
  *
  * @author ShookTea
  */
-class FlagBuilder extends ElementBuilder {
+public class FlagBuilder {
     protected FlagBuilder() {
         this.longFlag = Element.NO_LONG_FLAG;
         this.shortFlag = Element.NO_SHORT_FLAG;

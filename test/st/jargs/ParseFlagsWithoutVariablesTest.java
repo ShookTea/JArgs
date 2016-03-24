@@ -12,9 +12,9 @@ public class ParseFlagsWithoutVariablesTest {
 
     @Test
     public void testParseOneLongFlag() {        
-        Flag a = ElementBuilder.createFlag().setLongFlag("test-flag").build();
-        Flag b = ElementBuilder.createFlag().setLongFlag("other-flag").build();
-        Flag c = ElementBuilder.createFlag().setLongFlag("c-flag").build();
+        Flag a = FlagBuilder.createFlag().setLongFlag("test-flag").build();
+        Flag b = FlagBuilder.createFlag().setLongFlag("other-flag").build();
+        Flag c = FlagBuilder.createFlag().setLongFlag("c-flag").build();
         Parser p = Parser.createParser(a, b, c);
         p.parse("--other-flag");
         assertFalse(a.isUsed());
@@ -24,9 +24,9 @@ public class ParseFlagsWithoutVariablesTest {
 
     @Test
     public void testParseMoreShortFlagsConnected() {        
-        Flag a = ElementBuilder.createFlag().setShortFlag('a').build();
-        Flag b = ElementBuilder.createFlag().setShortFlag('b').build();
-        Flag c = ElementBuilder.createFlag().setShortFlag('c').build();
+        Flag a = FlagBuilder.createFlag().setShortFlag('a').build();
+        Flag b = FlagBuilder.createFlag().setShortFlag('b').build();
+        Flag c = FlagBuilder.createFlag().setShortFlag('c').build();
         Parser p = Parser.createParser(a, b, c);
         p.parse("-ac");
         assertTrue(a.isUsed());
@@ -36,9 +36,9 @@ public class ParseFlagsWithoutVariablesTest {
 
     @Test
     public void testParseMoreShortFlags() {       
-        Flag a = ElementBuilder.createFlag().setShortFlag('a').build();
-        Flag b = ElementBuilder.createFlag().setShortFlag('b').build();
-        Flag c = ElementBuilder.createFlag().setShortFlag('c').build();
+        Flag a = FlagBuilder.createFlag().setShortFlag('a').build();
+        Flag b = FlagBuilder.createFlag().setShortFlag('b').build();
+        Flag c = FlagBuilder.createFlag().setShortFlag('c').build();
         Parser p = Parser.createParser(a, b, c);
         p.parse("-a", "-b");
         assertTrue(a.isUsed());
@@ -48,8 +48,8 @@ public class ParseFlagsWithoutVariablesTest {
 
     @Test
     public void testParseOneShortFlag() {        
-        Flag a = ElementBuilder.createFlag().setShortFlag('a').build();
-        Flag b = ElementBuilder.createFlag().setShortFlag('b').build();
+        Flag a = FlagBuilder.createFlag().setShortFlag('a').build();
+        Flag b = FlagBuilder.createFlag().setShortFlag('b').build();
         Parser p = Parser.createParser(a, b);
         p.parse("-a");
         assertTrue(a.isUsed());
@@ -58,9 +58,9 @@ public class ParseFlagsWithoutVariablesTest {
 
     @Test
     public void testParseMoreLongFlags() {        
-        Flag a = ElementBuilder.createFlag().setLongFlag("test-flag").build();
-        Flag b = ElementBuilder.createFlag().setLongFlag("other-flag").build();
-        Flag c = ElementBuilder.createFlag().setLongFlag("c-flag").build();
+        Flag a = FlagBuilder.createFlag().setLongFlag("test-flag").build();
+        Flag b = FlagBuilder.createFlag().setLongFlag("other-flag").build();
+        Flag c = FlagBuilder.createFlag().setLongFlag("c-flag").build();
         Parser p = Parser.createParser(a, b, c);
         p.parse("--other-flag", "--c-flag");
         assertFalse(a.isUsed());
@@ -70,9 +70,9 @@ public class ParseFlagsWithoutVariablesTest {
 
     @Test
     public void testParseFlagsCombined() {        
-        Flag a = ElementBuilder.createFlag().setShortFlag('a').build();
-        Flag b = ElementBuilder.createFlag().setLongFlag("other-flag").build();
-        Flag c = ElementBuilder.createFlag().setShortFlag('c').build();
+        Flag a = FlagBuilder.createFlag().setShortFlag('a').build();
+        Flag b = FlagBuilder.createFlag().setLongFlag("other-flag").build();
+        Flag c = FlagBuilder.createFlag().setShortFlag('c').build();
         Parser p = Parser.createParser(a, b, c);
         p.parse("--other-flag", "-ac");
         assertTrue(a.isUsed());
