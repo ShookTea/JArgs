@@ -42,7 +42,4 @@ public abstract class Element {
     private String value;
     private boolean isUsed = false;
     private final boolean isValueRequired;
-    
-    public static final char NO_SHORT_FLAG = '-';
-    public static final String NO_LONG_FLAG = "-";
 }

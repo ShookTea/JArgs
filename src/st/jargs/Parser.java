@@ -112,7 +112,7 @@ public class Parser {
         for (Flag each : flagsList) {
             if (checkLongFlag(flagArgument, each)) return each;
         }
-        throw new ParserException("Correct flag for --" + flagArgument + " not found");
+        return Flag.BLANK;
     }
     
     private boolean checkLongFlag(String flagArgument, Flag flag) {
@@ -135,7 +135,7 @@ public class Parser {
         for (Flag each : all) {
             if (checkShortFlag(argument, each)) return each;
         }
-        throw new ParserException("Correct flag for -" + argument + " not found");
+        return Flag.BLANK;
     }
     
     private boolean checkShortFlag(char flagArgument, Flag flag) {

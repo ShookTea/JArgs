@@ -6,8 +6,8 @@ package st.jargs;
  */
 public class FlagBuilder {
     protected FlagBuilder(Parser p) {
-        this.longFlag = Element.NO_LONG_FLAG;
-        this.shortFlag = Element.NO_SHORT_FLAG;
+        this.longFlag = Flag.NO_LONG_FLAG;
+        this.shortFlag = Flag.NO_SHORT_FLAG;
         this.variableRequired = false;
         this.parser = p;
     }

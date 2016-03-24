@@ -79,4 +79,12 @@ public class ParseFlagsWithoutVariablesTest {
         assertTrue(b.isUsed());
         assertTrue(c.isUsed());
     }
+    
+    @Test
+    public void testParseFlagsWithBugs() {
+        Flag a = FlagBuilder.createFlag().setShortFlag('a').build();
+        Parser p = Parser.createParser(a);
+        p.parse("-ab");
+        assertTrue(a.isUsed());
+    }
 }
