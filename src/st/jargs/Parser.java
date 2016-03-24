@@ -15,6 +15,16 @@ public class Parser {
         elements.insertElements(elem);
     }
     
+    public Variable newVariable() {
+        Variable v = new Variable();
+        elements.insertElements(v);
+        return v;
+    }
+    
+    public FlagBuilder newFlag() {
+        return new FlagBuilder(this);
+    }
+    
     public void parse(String... args) throws ParserException {
         try {
             arguments = createArgumentsList(args);
