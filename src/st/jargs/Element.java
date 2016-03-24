@@ -4,7 +4,7 @@ package st.jargs;
  *
  * @author ShookTea
  */
-abstract class Element {
+public abstract class Element {
     public Element(boolean isValueRequired) {
         this.isValueRequired = isValueRequired;
     }
