@@ -1,6 +1,7 @@
 package st.jargs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -10,9 +11,7 @@ class ElementsPack {
     public ElementsPack() {}
     
     public void insertElements(Element... elems) {
-        for (Element each : elems) {
-            elementsList.add(each);
-        }
+        elementsList.addAll(Arrays.asList(elems));
     }
     
     public Flag[] getAllFlags() {

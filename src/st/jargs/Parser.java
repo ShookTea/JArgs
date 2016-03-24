@@ -10,6 +10,7 @@ public class Parser {
     public Parser() {
         elements = new ElementsPack();
     }
+    
     public void insertElements(Element... elem) {
         elements.insertElements(elem);
     }
@@ -45,9 +46,9 @@ public class Parser {
     
     private Argument getNextUnusedArgument(boolean valueOnly) {
         Argument ret = null;
-        for (int i = 0; i < arguments.length; i++) {
-            if (!arguments[i].isUsed() && (!valueOnly || (!arguments[i].isLongFlag() && !arguments[i].isShortFlag()))) {
-                ret = arguments[i];
+        for (Argument each : arguments) {
+            if (!each.isUsed() && (!valueOnly || (!each.isLongFlag() && !each.isShortFlag()))) {
+                ret = each;
                 break;
             }
         }
@@ -134,7 +135,7 @@ public class Parser {
         return !var.isUsed();
     }
     
-    private ElementsPack elements;
+    private final ElementsPack elements;
     private Argument[] arguments;
     
     public static Parser createParser(Element... elems) {
