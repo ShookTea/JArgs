@@ -67,4 +67,33 @@ public class ParseVariablesTest {
         assertTrue(d.isUsed());
         assertTrue(e.isUsed());
     }
+    
+    @Test
+    public void testGetRemainingVariables() {
+        Variable a = new Variable();
+        Variable b = new Variable();
+        Flag c = FlagBuilder.createFlag().setShortFlag('c').setVariableRequired(true).build();
+        Flag d = FlagBuilder.createFlag().setShortFlag('d').build();
+        Flag e = FlagBuilder.createFlag().setLongFlag("test-flag").build();
+        Parser p = Parser.createParser(a, b, c, d, e);
+        Variable[] rem = new Variable[0];
+        try {
+            p.parse("testA", "-cd", "testB", "--test-flag", "testC", "testD", "testE", "testF");
+            rem = p.getRemainingVariables();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        assertTrue(a.isUsed());
+        assertEquals("testA", a.getValue());
+        assertTrue(b.isUsed());
+        assertEquals("testC", b.getValue());
+        assertTrue(c.isUsed());
+        assertEquals("testB", c.getValue());
+        assertTrue(d.isUsed());
+        assertTrue(e.isUsed());
+        assertEquals(3, rem.length);
+        assertEquals("testD", rem[0].getValue());
+        assertEquals("testE", rem[1].getValue());
+        assertEquals("testF", rem[2].getValue());
+    }
 }
