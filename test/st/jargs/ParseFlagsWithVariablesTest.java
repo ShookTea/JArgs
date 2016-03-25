@@ -5,6 +5,8 @@
  */
 package st.jargs;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -21,11 +23,16 @@ public class ParseFlagsWithVariablesTest {
         Flag b = FlagBuilder.createFlag().setShortFlag('b').build();
         Flag c = FlagBuilder.createFlag().setShortFlag('c').build();
         Parser p = Parser.createParser(a, b, c);
-        p.parse("-a", "someValue");
-        assertTrue(a.isUsed());
-        assertEquals("someValue", a.getValue());
-        assertFalse(b.isUsed());
-        assertFalse(c.isUsed());
+        try {
+            p.parse("-a", "someValue");
+        } catch (WrongArgumentException ex) {
+            Logger.getLogger(ParseFlagsWithVariablesTest.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            assertTrue(a.isUsed());
+            assertEquals("someValue", a.getValue());
+            assertFalse(b.isUsed());
+            assertFalse(c.isUsed());
+        }
     }
     
     @Test
@@ -34,12 +41,17 @@ public class ParseFlagsWithVariablesTest {
         Flag b = FlagBuilder.createFlag().setShortFlag('b').setVariableRequired(true).build();
         Flag c = FlagBuilder.createFlag().setShortFlag('c').build();
         Parser p = Parser.createParser(a, b, c);
-        p.parse("-acb", "someValue", "otherValue");
-        assertTrue(a.isUsed());
-        assertEquals("someValue", a.getValue());
-        assertEquals("otherValue", b.getValue());
-        assertTrue(b.isUsed());
-        assertTrue(c.isUsed());
+        try {
+            p.parse("-acb", "someValue", "otherValue");
+        } catch (WrongArgumentException ex) {
+            Logger.getLogger(ParseFlagsWithVariablesTest.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            assertTrue(a.isUsed());
+            assertEquals("someValue", a.getValue());
+            assertEquals("otherValue", b.getValue());
+            assertTrue(b.isUsed());
+            assertTrue(c.isUsed());
+        }
     }
     
     @Test
@@ -48,11 +60,16 @@ public class ParseFlagsWithVariablesTest {
         Flag b = FlagBuilder.createFlag().setShortFlag('b').setVariableRequired(true).build();
         Flag c = FlagBuilder.createFlag().setShortFlag('c').build();
         Parser p = Parser.createParser(a, b, c);
-        p.parse("--test-flag", "someValue");
-        assertTrue(a.isUsed());
-        assertEquals("someValue", a.getValue());
-        assertFalse(b.isUsed());
-        assertFalse(c.isUsed());
+        try {
+            p.parse("--test-flag", "someValue");
+        } catch (WrongArgumentException ex) {
+            Logger.getLogger(ParseFlagsWithVariablesTest.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            assertTrue(a.isUsed());
+            assertEquals("someValue", a.getValue());
+            assertFalse(b.isUsed());
+            assertFalse(c.isUsed());
+        }
     }
     
     @Test
@@ -61,12 +78,17 @@ public class ParseFlagsWithVariablesTest {
         Flag b = FlagBuilder.createFlag().setShortFlag('b').setLongFlag("other-flag").setVariableRequired(true).build();
         Flag c = FlagBuilder.createFlag().setShortFlag('c').build();
         Parser p = Parser.createParser(a, b, c);
-        p.parse("--test-flag", "--other-flag", "someValue", "otherValue");
-        assertTrue(a.isUsed());
-        assertEquals("someValue", a.getValue());
-        assertTrue(b.isUsed());
-        assertEquals("otherValue", b.getValue());
-        assertFalse(c.isUsed());
+        try {
+            p.parse("--test-flag", "--other-flag", "someValue", "otherValue");
+        } catch (WrongArgumentException ex) {
+            Logger.getLogger(ParseFlagsWithVariablesTest.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            assertTrue(a.isUsed());
+            assertEquals("someValue", a.getValue());
+            assertTrue(b.isUsed());
+            assertEquals("otherValue", b.getValue());
+            assertFalse(c.isUsed());
+        }
     }
     
     @Test
@@ -76,13 +98,18 @@ public class ParseFlagsWithVariablesTest {
         Flag c = FlagBuilder.createFlag().setShortFlag('c').build();
         Flag d = FlagBuilder.createFlag().setShortFlag('d').build();
         Parser p = Parser.createParser(a, b, c, d);
-        p.parse("--other-flag", "-ac", "someValue", "otherValue");
-        assertTrue(a.isUsed());
-        assertEquals("otherValue", a.getValue());
-        assertTrue(b.isUsed());
-        assertEquals("someValue", b.getValue());
-        assertTrue(c.isUsed());
-        assertFalse(d.isUsed());
+        try {
+            p.parse("--other-flag", "-ac", "someValue", "otherValue");
+        } catch (WrongArgumentException ex) {
+            Logger.getLogger(ParseFlagsWithVariablesTest.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            assertTrue(a.isUsed());
+            assertEquals("otherValue", a.getValue());
+            assertTrue(b.isUsed());
+            assertEquals("someValue", b.getValue());
+            assertTrue(c.isUsed());
+            assertFalse(d.isUsed());
+        }
     }
     
 }

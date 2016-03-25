@@ -10,7 +10,6 @@ import java.util.Arrays;
 public class Parser {
     public Parser() {
         elements = new ElementsPack();
-        remainingVariables = new ArrayList<>();
     }
     
     public void insertElements(Element... elem) {
@@ -27,20 +26,13 @@ public class Parser {
         return new FlagBuilder(this);
     }
     
-    public void parse(String... args) throws ParserException {
+    public void parse(String... args) throws WrongArgumentException {
         try {
             arguments = createArgumentsList(args);
             tryParse();
         } catch (ParserException ex) {
-            throw new ParserException("Exception while parsing arguments " + Arrays.toString(args), ex);
+            throw new WrongArgumentException("Wrong arguments used: " + Arrays.toString(args), ex);
         }
-    }
-    
-    public Variable[] getRemainingVariables() throws ParserException {
-        if (wasParserRunned) {
-            return remainingVariables.toArray(new Variable[0]);
-        }
-        throw new ParserException("Trying to get remaining variables without running parser");
     }
     
     private Argument[] createArgumentsList(String[] arguments) {
@@ -57,7 +49,6 @@ public class Parser {
             parseNextArgument(arg);
             arg.use();
         }
-        wasParserRunned = true;
     }
     
     private Argument getNextUnusedArgument() {
@@ -143,14 +134,12 @@ public class Parser {
         return flag.getShortFlag() == flagArgument;
     }
     
-    private Variable parseVariable(Argument arg) throws ParserException {
+    private Variable parseVariable(Argument arg) {
         Variable[] all = elements.getAllVariables();
         for (Variable each : all) {
             if (checkVariable(arg, each)) return each;
         }
-        Variable v = new Variable();
-        remainingVariables.add(v);
-        return v;
+        throw new ParserException("Too many variables in arguments");
     }
     
     private boolean checkVariable(Argument arg, Variable var) {
@@ -159,8 +148,6 @@ public class Parser {
     
     private final ElementsPack elements;
     private Argument[] arguments;
-    private ArrayList<Variable> remainingVariables;
-    private boolean wasParserRunned = false;
     
     public static Parser createParser(Element... elems) {
         Parser p = new Parser();
