@@ -29,8 +29,4 @@ public class Flag extends Element {
 
     private final char shortFlag;
     private final String longFlag;
-    
-    public static final char NO_SHORT_FLAG = '-';
-    public static final String NO_LONG_FLAG = "-";
-    public static final Flag BLANK = new Flag(NO_SHORT_FLAG, NO_LONG_FLAG, false);
 }
