@@ -1,6 +1,5 @@
 package st.jargs;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -30,7 +29,7 @@ public class Parser {
         try {
             arguments = createArgumentsList(args);
             tryParse();
-        } catch (ParserException ex) {
+        } catch (WrongArgumentException ex) {
             throw new WrongArgumentException("Wrong arguments used: " + Arrays.toString(args), ex);
         }
     }
@@ -43,7 +42,7 @@ public class Parser {
         return ret;
     }
     
-    private void tryParse() throws ParserException {
+    private void tryParse() throws WrongArgumentException {
         Argument arg;
         while ((arg = getNextUnusedArgument()) != null) {
             parseNextArgument(arg);
@@ -66,7 +65,7 @@ public class Parser {
         return ret;
     }
     
-    private void parseNextArgument(Argument arg) throws ParserException {
+    private void parseNextArgument(Argument arg) throws WrongArgumentException {
         if (arg.isLongFlag()) {
             Flag flag = parseLongFlag(arg);
             if (flag.isValueRequired()) {
@@ -97,13 +96,13 @@ public class Parser {
         }
     }
 
-    private Flag parseLongFlag(Argument argument) throws ParserException {
+    private Flag parseLongFlag(Argument argument) throws WrongArgumentException {
         String flagArgument = argument.getArgument().substring(2).trim();
         Flag[] flagsList = elements.getAllFlags();
         for (Flag each : flagsList) {
             if (checkLongFlag(flagArgument, each)) return each;
         }
-        throw new ParserException("Correct flag for --" + flagArgument + " not found");
+        throw new WrongArgumentException("Correct flag for --" + flagArgument + " not found");
     }
     
     private boolean checkLongFlag(String flagArgument, Flag flag) {
@@ -111,7 +110,7 @@ public class Parser {
         return flag.getLongFlag().equals(flagArgument);
     }
     
-    private Flag[] parseShortFlags(Argument argument) throws ParserException {
+    private Flag[] parseShortFlags(Argument argument) throws WrongArgumentException {
         String flagsArgument = argument.getArgument().substring(1).trim();
         Flag[] ret = new Flag[flagsArgument.length()];
         for (int i = 0; i < ret.length; i++) {
@@ -121,12 +120,12 @@ public class Parser {
         return ret;
     }
     
-    private Flag parseShortFlag(char argument) throws ParserException {
+    private Flag parseShortFlag(char argument) throws WrongArgumentException {
         Flag[] all = elements.getAllFlags();
         for (Flag each : all) {
             if (checkShortFlag(argument, each)) return each;
         }
-        throw new ParserException("Correct flag for -" + argument + " not found");
+        throw new WrongArgumentException("Correct flag for -" + argument + " not found");
     }
     
     private boolean checkShortFlag(char flagArgument, Flag flag) {
@@ -134,16 +133,12 @@ public class Parser {
         return flag.getShortFlag() == flagArgument;
     }
     
-    private Variable parseVariable(Argument arg) {
+    private Variable parseVariable(Argument arg) throws WrongArgumentException {
         Variable[] all = elements.getAllVariables();
         for (Variable each : all) {
-            if (checkVariable(arg, each)) return each;
+            if (!each.isUsed()) return each;
         }
-        throw new ParserException("Too many variables in arguments");
-    }
-    
-    private boolean checkVariable(Argument arg, Variable var) {
-        return !var.isUsed();
+        throw new WrongArgumentException("Too many variables in arguments");
     }
     
     private final ElementsPack elements;
